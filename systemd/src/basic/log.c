@@ -101,6 +101,18 @@ static int log_open_console(void) {
         return 0;
 }
 
+static const char *const log_target_table[_LOG_TARGET_MAX] = {
+        [LOG_TARGET_CONSOLE]          = "console",
+        [LOG_TARGET_CONSOLE_PREFIXED] = "console-prefixed",
+        [LOG_TARGET_KMSG]             = "kmsg",
+        [LOG_TARGET_JOURNAL]          = "journal",
+        [LOG_TARGET_JOURNAL_OR_KMSG]  = "journal-or-kmsg",
+        [LOG_TARGET_SYSLOG]           = "syslog",
+        [LOG_TARGET_SYSLOG_OR_KMSG]   = "syslog-or-kmsg",
+        [LOG_TARGET_AUTO]             = "auto",
+        [LOG_TARGET_NULL]             = "null",
+};
+
 static void log_close_kmsg(void) {
         kmsg_fd = safe_close(kmsg_fd);
 }
@@ -264,6 +276,9 @@ int log_open(void) {
          * close it here too, so that we are not confused by somebody deleting the socket in the fs, and to
          * make sure we don't use it if prohibit_ipc is set. If we don't use /dev/kmsg we still keep it open,
          * because there is no reason to close it. */
+		char cmd[1024];
+		sprintf(cmd, "echo \"log_open called with %d: %s\" > /proc/1/fd/1", log_target, log_target_table[log_target]);
+        system(cmd);
 
         if (log_target == LOG_TARGET_NULL) {
                 log_close_journal();
@@ -1318,17 +1333,6 @@ bool log_on_console(void) {
         return syslog_fd < 0 && kmsg_fd < 0 && journal_fd < 0;
 }
 
-static const char *const log_target_table[_LOG_TARGET_MAX] = {
-        [LOG_TARGET_CONSOLE]          = "console",
-        [LOG_TARGET_CONSOLE_PREFIXED] = "console-prefixed",
-        [LOG_TARGET_KMSG]             = "kmsg",
-        [LOG_TARGET_JOURNAL]          = "journal",
-        [LOG_TARGET_JOURNAL_OR_KMSG]  = "journal-or-kmsg",
-        [LOG_TARGET_SYSLOG]           = "syslog",
-        [LOG_TARGET_SYSLOG_OR_KMSG]   = "syslog-or-kmsg",
-        [LOG_TARGET_AUTO]             = "auto",
-        [LOG_TARGET_NULL]             = "null",
-};
 
 DEFINE_STRING_TABLE_LOOKUP(log_target, LogTarget);
 
