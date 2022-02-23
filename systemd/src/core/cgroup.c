@@ -3407,6 +3407,7 @@ int manager_setup_cgroup(Manager *m) {
                         log_debug("Release agent already installed.");
         }
 
+        log_info("creating cgroup magic, with root: %s; scope_path: %s", m->cgroup_root, scope_path);
         /* 5. Make sure we are in the special "init.scope" unit in the root slice. */
         scope_path = strjoina(m->cgroup_root, "/" SPECIAL_INIT_SCOPE);
         r = cg_create_and_attach(SYSTEMD_CGROUP_CONTROLLER, scope_path, 0);
