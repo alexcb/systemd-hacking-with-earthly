@@ -3035,6 +3035,9 @@ int main(int argc, char *argv[]) {
                 /* Open the logging devices, if possible and necessary */
                 log_info("here7");
                 log_open();
+
+				system("echo \"made it here\" >> /my-log");
+				system("echo \"made it here via proc\" > /proc/1/fd/1");
         }
         log_info("here8");
 
