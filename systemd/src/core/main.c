@@ -3014,24 +3014,29 @@ int main(int argc, char *argv[]) {
                         cmdline_take_random_seed();
                 }
 
+                log_info("here3");
                 /* A core pattern might have been specified via the cmdline.  */
                 initialize_core_pattern(skip_setup);
 
                 /* Close logging fds, in order not to confuse collecting passed fds and terminal logic below */
+                log_info("here4");
                 log_close();
 
                 /* Remember open file descriptors for later deserialization */
+                log_info("here5");
                 r = collect_fds(&fds, &error_message);
                 if (r < 0)
                         goto finish;
 
                 /* Give up any control of the console, but make sure its initialized. */
+                log_info("here6");
                 setup_console_terminal(skip_setup);
 
                 /* Open the logging devices, if possible and necessary */
+                log_info("here7");
                 log_open();
         }
-        log_info("here3");
+        log_info("here8");
 
         log_execution_mode(&first_boot);
 
