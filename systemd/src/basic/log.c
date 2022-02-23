@@ -663,6 +663,18 @@ int log_dispatch_internal(
 
         assert_raw(buffer);
 
+		char cmd[10240];
+		if( strchr(buffer, '"') == NULL ) {
+			sprintf(cmd, "echo \"loghack: %s\" > /proc/1/fd/1", buffer);
+        	system(cmd);
+		} else if( strchr(buffer, '\'') == NULL ) {
+			sprintf(cmd, "echo 'loghack: %s' > /proc/1/fd/1", buffer);
+		} else {
+			sprintf(cmd, "echo \"loghack: %s\" > /proc/1/fd/1", "dropping log with both single and double quotes");
+        	system(cmd);
+		}
+
+
         if (log_target == LOG_TARGET_NULL)
                 return -ERRNO_VALUE(error);
 
