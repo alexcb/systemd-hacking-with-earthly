@@ -2909,9 +2909,9 @@ int main(int argc, char *argv[]) {
                 log_show_color(colors_enabled());
 
                 log_info("before make_null_stdio");
-                r = make_null_stdio();
-                if (r < 0)
-                        log_warning_errno(r, "Failed to redirect standard streams to /dev/null, ignoring: %m");
+                //r = make_null_stdio();
+                //if (r < 0)
+                //        log_warning_errno(r, "Failed to redirect standard streams to /dev/null, ignoring: %m");
 
                 log_info("kmod_setup");
                 /* Load the kernel modules early. */
