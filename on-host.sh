@@ -50,6 +50,9 @@ while true; do
   sleep 1
 done
 
+docker exec kind-test /bin/sh -c 'cat /dev/kmsg; echo kmsg-cat-done' &
+
+
 docker exec kind-test /bin/sh -c 'hostname'
 
 docker exec kind-test /bin/sh -c 'dd if=/dev/kmsg iflag=nonblock || true'
