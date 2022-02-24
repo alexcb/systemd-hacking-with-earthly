@@ -316,10 +316,12 @@ int cg_create_and_attach(const char *controller, const char *path, pid_t pid) {
 
         assert(pid >= 0);
 
+		log_info("cg_create controller: %s; path: %s", controller, path);
         r = cg_create(controller, path);
         if (r < 0)
                 return r;
 
+		log_info("cg_attach controller: %s; path: %s, pid: %d", controller, path, pid);
         q = cg_attach(controller, path, pid);
         if (q < 0)
                 return q;
