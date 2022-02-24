@@ -347,6 +347,7 @@ int cg_attach(const char *controller, const char *path, pid_t pid) {
 
         xsprintf(c, PID_FMT "\n", pid);
 
+		log_info("write_string_file fs: %s; c: %s", fs, c);
         r = write_string_file(fs, c, WRITE_STRING_FILE_DISABLE_BUFFER);
         if (r == -EOPNOTSUPP && cg_is_threaded(controller, path) > 0) {
 				log_info("cg_attach failed here");
