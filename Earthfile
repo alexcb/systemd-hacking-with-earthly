@@ -42,3 +42,13 @@ test-kind-systemd:
         RUN --no-cache KEEP=1 IMG=ksd EXTRA="-e SYSTEMD_LOG_LEVEL=info" ./on-host.sh
         #RUN --no-cache KEEP=1 IMG=ksd EXTRA="-e SYSTEMD_LOG_LEVEL=debug" ./on-host.sh
     END
+
+test-cgroup-img:
+    FROM ubuntu:21.04
+    COPY create-and-move-into-cgroup.sh .
+
+test-cgroup:
+    FROM earthly/dind:alpine
+    WITH DOCKER --load tci:latest=+test-cgroup-img
+        RUN --no-cache docker run tci:latest ./create-and-move-into-cgroup.sh
+    END
