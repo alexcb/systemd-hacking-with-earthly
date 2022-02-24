@@ -50,5 +50,5 @@ test-cgroup-img:
 test-cgroup:
     FROM earthly/dind:alpine
     WITH DOCKER --load tci:latest=+test-cgroup-img
-        RUN --no-cache docker run tci:latest ./create-and-move-into-cgroup.sh
+        RUN --no-cache docker run --privileged tci:latest ./create-and-move-into-cgroup.sh
     END
